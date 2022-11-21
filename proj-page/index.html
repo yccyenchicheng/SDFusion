@@ -1,0 +1,646 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XB3PR2Y1TQ"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XB3PR2Y1TQ');
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./assets/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+
+    <meta property="og:site_name" content="SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content="SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation" />
+    <meta property="og:description" content="SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation, 2022." />
+    <meta property="og:url" content="https://SDFusion.github.io/" />
+    <meta property="og:image" content="https://SDFusion.github.io/assets/images/dreamfusion_samples.png" />
+
+    <meta property="article:publisher" content="https://SDFusion.github.io/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation" />
+    <meta name="twitter:description" content="We use diffusion models to generate SDF for 3D shape synthesis." />
+    <meta name="twitter:url" content="https://SDFusion.github.io/" />
+    <meta name="twitter:image" content="https://dreamfusion3d.github.io/assets/images/dreamfusion_samples.png" />
+    <!-- <meta name="twitter:site" content="" /> -->
+
+    <script src="./assets/js/video_comparison.js"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer@2.0.1/dist/model-viewer.min.js"></script>
+</head>
+
+<body>
+    <!-- <div class="banner">
+      <video class="video lazy"
+          poster="https://dreamfusion-cdn.ajayj.com/sept28/banner_1x6_customhue_A.jpg"
+          autoplay loop playsinline muted>
+        <source data-src="https://dreamfusion-cdn.ajayj.com/sept28/banner_1x6_customhue_A.mp4" type="video/mp4"></source>
+      </video>
+    </div> -->
+
+    <div class="highlight-clean" style="padding-bottom: 10px;">
+        <!-- <div class="container" style="max-width: 768px;"> -->
+        <div class="container" style="max-width: 768px;">
+            <h1 class="text-center"><b>SDFusion</b>: Multimodal 3D Shape Completion, Reconstruction, and Generation</h1>
+        </div>
+
+        <div class="container" style="max-width: 768px; position: relative; left: 110px;">
+            <div class="row authors">
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a class="text-center" href="https://yccyenchicheng.github.io/">Yen-Chi Cheng</a></h5>
+                    <h6 class="text-center">UIUC</h6>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a href="http://hsinyinglee.com/">Hsin-Ying Lee</a></h5>
+                    <h6 class="text-center">Snap Research</h6>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a class="text-center" href="http://www.stulyakov.com/">Sergey Tulyakov</a></h5>
+                    <h6 class="text-center">Snap Research</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="max-width: 768px; position: relative; left: 310px;">
+            <div class="row authors">
+              <div class="col-sm-2">
+                  <h5 class="text-center"><a class="text-center" href="https://www.alexander-schwing.de/">Alex Schwing</a></h5>
+                  <h6 class="text-center">UIUC</h6>
+              </div>
+              <div class="col-sm-2">
+                <h5 class="text-center"><a class="text-center" href="https://cs.illinois.edu/about/people/faculty/lgui">Liangyan Gui</a></h5>
+                <h6 class="text-center">UIUC</h6>
+              </div>
+            </div>
+        </div>
+
+        <div class="buttons" style="margin-bottom: 8px;">
+            <a class="btn btn-light" role="button" href="https://arxiv.org/abs/2209.14988">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M16 0H8C6.9 0 6 .9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0M20 18H8V2H15V7H20V18M4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4M10 10V12H18V10H10M10 14V16H15V14H10Z"></path>
+                </svg>Paper
+            </a>
+            <a class="btn btn-light disabled border border-dark" aria-disabled="true" role="button" href="#">
+                <svg style="visibility:hidden;width:0px;height:24px;margin-left:-12px;margin-right:12px" width="0px" height="24px" viewBox="0 0 375 531">
+                    <polygon stroke="#000000" points="0.5,0.866 459.5,265.87 0.5,530.874 "/>
+                </svg>
+                Project
+            </a>
+            <a class="btn btn-light" role="button" href="/gallery.html">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" width="24px" height="24px" viewBox="0 0 375 531">
+                    <polygon stroke="#000000" points="0.5,0.866 459.5,265.87 0.5,530.874 "/>
+                </svg>
+                Gallery
+            </a>
+        </div>
+    </div>
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Abstract</h2>
+                <p>
+                    <!-- <strong> -->
+                      In this work, we present a novel framework built to simplify 3D asset generation for amateur users. To enable interactive generation, our method supports a variety of input modalities that can be easily provided by a human, including images, text, partially observed shapes and combinations of these, further allowing to adjust the strength of each input. At the core of our approach is an encoder-decoder, compressing 3D shapes into a compact latent representation, upon which a diffusion model is learned. To enable a variety of multi-modal inputs, we employ task-specific encoders with dropout followed by a cross-attention mechanism. Due to its flexibility, our model naturally supports a variety of tasks, outperforming prior works on shape completion, image-based 3D reconstruction, and text-to-3D. Most interestingly, our model can combine all these tasks into one swiss-army-knife tool, enabling the user to perform shape generation using incomplete shapes, images, and textual descriptions at the same time, providing the relative weights for each input and facilitating interactivity. Despite our approach being shape-only, we further show an efficient method to texture the generated shape using large-scale text-to-image models.
+                    <!-- </strong> -->
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="max-width: 768px;">
+        <div class="row captioned_videos">
+            <div class="col-md-12">
+                <!-- Large format devices -->
+                <!-- <video class="video lazy d-none d-xs-none d-sm-block" autoplay loop playsinline muted poster="https://dreamfusion-cdn.ajayj.com/sept28/wipe_opposite_6x4_smoothstep.jpg">
+                    <source data-src="https://dreamfusion-cdn.ajayj.com/sept28/wipe_opposite_6x4_smoothstep.mp4" type="video/mp4"></source>
+                </video> -->
+                <!-- Small format devices -->
+                <!-- <video class="video lazy d-xs-block d-sm-none" autoplay loop playsinline muted poster="https://dreamfusion-cdn.ajayj.com/sept28/shaded_3x3_smoothstep.jpg">
+                    <source data-src="https://dreamfusion-cdn.ajayj.com/sept28/shaded_3x3_smoothstep.mp4" type="video/mp4"></source>
+                </video> -->
+                <img src="./assets/1-teaser-v3-out-1.png" style="max-width: 768px;">
+
+                <h6 class="caption" style="text-align: center;"> The proposed diffusion-based 3D shape generator enables various applications.
+                  (left) SDFusion can generate 3D shapes conditioned on different input modalities, including partial shapes, images, and text. 
+                  SDFusion can even jointly handle multiple conditioning modalities while controlling the  strength for each of them.
+                  (right) We showcase an application where we leverage pretrained 2D models to texture 3D shapes generated by SDFusion. </h6>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+        <div class="col-md-12">
+            <h2>3D print</h2>
+        </div>
+      </div>
+
+      <video autoplay loop muted playsinline width="20%">
+        <source src="./assets/3d_print.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Shape Completion</h2>
+          </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-shape-comp-4">
+          <div class="shape-comp-ours" >
+            <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/34-all-COMMERCIALoffice_building_mesh0394-mode_back-1-gt-missing+part.gif"> </div>
+            <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/34-all-COMMERCIALoffice_building_mesh0394-mode_back-2-gen-0-trial_21.gif"> </div>
+            <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/34-all-COMMERCIALoffice_building_mesh0394-mode_back-2-gen-1-trial_18.gif"> </div>
+            <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/34-all-COMMERCIALoffice_building_mesh0394-mode_back-2-gen-4-trial_18.gif"> </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 my-auto">
+          <div class="shape-comp-ours" style="position: relative; left: 130px;">
+            <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/132-all-RESIDENTIALvilla_mesh4725-mode_back-1-gt-missing+part.gif"> </div>
+            <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/132-all-RESIDENTIALvilla_mesh4725-mode_back-2-gen-0-trial_25.gif"> </div>
+            <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/132-all-RESIDENTIALvilla_mesh4725-mode_back-2-gen-1-trial_25.gif"> </div>
+            <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/132-all-RESIDENTIALvilla_mesh4725-mode_back-2-gen-4-trial_22.gif"> </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="col-shape-comp-ours">
+          <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/34-all-COMMERCIALoffice_building_mesh0394-mode_back-1-gt-missing+part.gif"> </div>
+          <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/34-all-COMMERCIALoffice_building_mesh0394-mode_back-2-gen-0-trial_21.gif"> </div>
+          <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/34-all-COMMERCIALoffice_building_mesh0394-mode_back-2-gen-1-trial_18.gif"> </div>
+          <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/34-all-COMMERCIALoffice_building_mesh0394-mode_back-2-gen-4-trial_18.gif"> </div>
+        </div>
+        
+        <!-- adjust position if need to -->
+        <div class="col-shape-comp-ours" style="position: relative; left: 10px;"> 
+          <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/132-all-RESIDENTIALvilla_mesh4725-mode_back-1-gt-missing+part.gif"> </div>
+          <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/132-all-RESIDENTIALvilla_mesh4725-mode_back-2-gen-0-trial_25.gif"> </div>
+          <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/132-all-RESIDENTIALvilla_mesh4725-mode_back-2-gen-1-trial_25.gif"> </div>
+          <div class="img-container-bnet"> <img src="./assets/2-shapecomp-ours/back/132-all-RESIDENTIALvilla_mesh4725-mode_back-2-gen-4-trial_22.gif"> </div>
+        </div>
+      </div>
+
+      <!-- 2nd row -->
+      <div class="row">
+        <div class="col-shape-comp-ours">
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02691156-48b99ae8fbe0762a8ed04761eced33c6-mode_back-1-gt-missing+part.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02691156-48b99ae8fbe0762a8ed04761eced33c6-mode_back-2-gen-0.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02691156-48b99ae8fbe0762a8ed04761eced33c6-mode_back-2-gen-5.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02691156-48b99ae8fbe0762a8ed04761eced33c6-mode_back-2-gen-8.gif"> </div>
+        </div>
+
+        <div class="col-shape-comp-ours">
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02828884-972e0e5717676e47d201085e80edb26a-mode_back-1-gt-missing+part.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02828884-972e0e5717676e47d201085e80edb26a-mode_back-2-gen-0-trial_31.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02828884-972e0e5717676e47d201085e80edb26a-mode_back-2-gen-3-trial_31.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02828884-972e0e5717676e47d201085e80edb26a-mode_back-2-gen-5-trial_31.gif"> </div>
+        </div>
+      </div>
+
+      <!-- 3nd row -->
+      <div class="row">
+        <div class="col-shape-comp-ours">
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/03001627-fc14c1aa7831f4cbcaef18b2fd3fb17c-mode_back-1-gt-missing+part.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/03001627-fc14c1aa7831f4cbcaef18b2fd3fb17c-mode_back-2-gen-1-trial_43.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/03001627-fc14c1aa7831f4cbcaef18b2fd3fb17c-mode_back-2-gen-5-trial_43.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/03001627-fc14c1aa7831f4cbcaef18b2fd3fb17c-mode_back-2-gen-7-trial_42.gif"> </div>
+        </div>
+
+        <div class="col-shape-comp-ours">
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02828884-972e0e5717676e47d201085e80edb26a-mode_back-1-gt-missing+part.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02828884-972e0e5717676e47d201085e80edb26a-mode_back-2-gen-0-trial_31.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02828884-972e0e5717676e47d201085e80edb26a-mode_back-2-gen-3-trial_31.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/02828884-972e0e5717676e47d201085e80edb26a-mode_back-2-gen-5-trial_31.gif"> </div>
+        </div>
+      </div>
+
+      <!-- 4nd row -->
+      <div class="row">
+        <div class="col-shape-comp-ours">
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/04090263-b754214217c4405dda6cae4e030ce341-mode_back-1-gt-missing+part.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/04090263-b754214217c4405dda6cae4e030ce341-mode_back-2-gen-1-trial_46.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/04090263-b754214217c4405dda6cae4e030ce341-mode_back-2-gen-3-trial_45.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/04090263-b754214217c4405dda6cae4e030ce341-mode_back-2-gen-4-trial_46.gif"> </div>
+        </div>
+
+        <div class="col-shape-comp-ours">
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/04256520-8f1ce2b3b4f352254b3c42e318f3affc-mode_back-1-gt-missing+part.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/04256520-8f1ce2b3b4f352254b3c42e318f3affc-mode_back-2-gen-0-trial_36.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/04256520-8f1ce2b3b4f352254b3c42e318f3affc-mode_back-2-gen-1-trial_38.gif"> </div>
+          <div class="img-container-snet"> <img src="./assets/2-shapecomp-ours/back/04256520-8f1ce2b3b4f352254b3c42e318f3affc-mode_back-2-gen-6-trial_38.gif"> </div>
+        </div>
+      </div>
+
+      <div class="container" style="max-width: 768px; position: relative; left: 0px;">
+        <div class="row legends">
+        <!-- <div class="row authors"> -->
+          <h6 class="text-left" style="position: relative; left: -10px;">Input</h6>
+          <h6 class="text-left" style="position: relative; left: 63px;">Multimodal Shape Completion</h6>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Text-guided 3D Generation</h2>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-txt2shape">
+          <div class="txt2shape-ours" style="position: relative; left: 0px;">
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/Square table, curved legs-0-2.gif"> </div>
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/Square table, curved legs-0-4.gif"> </div>
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/Square table, curved legs-0-6.gif"> </div>
+          </div>
+          <div class="txt2shape-ours-input">
+            <h5> "Square table, curved legs" </h5>
+          </div>
+        </div>
+
+        <div class="col-txt2shape" style="position: relative; left: 4%;">
+          <div class="txt2shape-ours" style="position: relative; left: 0%;">
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/a wooden table, has two bottom shelfves-0.gif"> </div>
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/a wooden table, has two bottom shelfves-1.gif"> </div>
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/a wooden table, has two bottom shelfves-2.gif"> </div>
+          </div>
+          <div class="txt2shape-ours-input">
+            <h5> "A wooden table, has two bottom shelves" </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2nd row -->
+      <div class="row">
+        <div class="col-txt2shape">
+          <div class="txt2shape-ours" style="position: relative; left: 0px;">
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/a chair with pillow for back support-0-0.gif"> </div>
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/a chair with pillow for back support-0-1.gif"> </div>
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/a chair with pillow for back support-0-5.gif"> </div>
+          </div>
+          <div class="txt2shape-ours-input">
+            <h5> "A chair with pillow for back support" </h5>
+          </div>
+        </div>
+
+        <div class="col-txt2shape" style="position: relative; left: 5%;">
+          <div class="txt2shape-ours" style="position: relative; left: 0%;">
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/L shape table-1-0.gif"> </div>
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/L shape table-1-8.gif"> </div>
+            <div class="img-container"> <img src="./assets/5-txt2shape-ours/L shape table-2-1.gif"> </div>
+          </div>
+          <div class="txt2shape-ours-input">
+            <h5> "An L shape table" </h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- p_shape + text -->
+      <!-- <div class="row">
+        <div class="col-txt2shape">
+          <div class="txt2shape-ours" style="position: relative; left: 0px;">
+            <img class="cropped-img" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-1-gt-part.gif">
+            <div class="col-pshape_txt-input">
+              <h5> + "Chair with square back" &nbsp &nbsp &nbsp &#10230 </h5>
+            </div>
+
+            <img class="cropped-img" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-2-gen-0-trial_0.gif">
+            <img class="cropped-img" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-2-gen-0-trial_1.gif">
+            <img class="cropped-img" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-2-gen-1-trial_0.gif">
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="col-md-12">
+            <h3>
+              Some captions for txt2shape.
+            </h3>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Conditional Guidance for Shape Completion</h2>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+            <h3>
+              Parital shape + text.
+            </h3>
+        </div>
+      </div>
+
+      <!-- p_shape + text -->
+      <div class="row">
+        <div class="col-txt2shape">
+          <div class="txt2shape-ours" style="position: relative; left: 0px;">
+            
+            <div class="img-container" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-1-gt-part.gif">
+
+            <img class="cropped-img" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-1-gt-part.gif">
+            <div class="col-pshape_txt-input">
+              <h5> + "Chair with square back" &nbsp &nbsp &nbsp &#10230 </h5>
+            </div>
+            
+            <img class="cropped-img" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-2-gen-0-trial_0.gif">
+            <img class="cropped-img" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-2-gen-0-trial_1.gif">
+            <img class="cropped-img" src="./assets/6-cond-guidance-txt/chair-SS_136-txt-with square back-2-gen-1-trial_0.gif">
+          </div>
+        </div>
+      </div>
+
+      <!-- p_shape + image -->
+      <div class="row">
+        <div class="col-md-12">
+            <h3>
+              Parital shape + image.
+            </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-cond-guide-img">
+          <div class="cond-guide-img" style="position: relative; left: 0px;">
+            <img class="cropped-img" src="./assets/6-cond-guidance-img/chair-IKEA_PATRIK-img_view-2756-1-gt-part.gif">
+            <div class="col-pshape_img-input">
+              <h5> + </h5>
+            </div>
+            <img class="cropped-img" src="./assets/6-cond-guidance-img/chair-IKEA_PATRIK-img_view-2756-0-img.png">
+            <div class="col-pshape_img-input">
+              <h5> &#10230 </h5>
+            </div>
+            <img class="cropped-img" src="./assets/6-cond-guidance-img/chair-IKEA_PATRIK-img_view-2756-2-gen-0-trial_0.gif">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Single-view Reconstruction</h2>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp">
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-gen-vox-rand_tf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-gen-vox-resnet2sdf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+  
+      <div class="row">
+          <div class="col-img2shape-comp">
+            <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-1-img-gt.png"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-1-gt-vox.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-df-vox-0.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-gen-vox-rand_tf-2.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-gen-vox-resnet2vox.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-gen-vox-resnet2sdf-0.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-gen-vox-pix2vox.gif"> </div>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp" >
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-gen-vox-rand_tf-1.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-gen-vox-resnet2sdf.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp" >
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-gen-vox-rand_tf-1.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-gen-vox-resnet2sdf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp" >
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-gen-vox-rand_tf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-gen-vox-resnet2sdf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp" >
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-gen-vox-rand_tf-2.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-gen-vox-resnet2sdf.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+
+      <div class="container" style="max-width: 768px; position: relative; left: 0px;">
+        <div class="row legends">
+        <!-- <div class="row authors"> -->
+          <h6 class="text-left" style="position: relative; left: 2%;">Input</h6>
+          <h6 class="text-left" style="position: relative; left: 14%;">GT</h6>
+          <h6 class="text-left" style="position: relative; left: 25%;">Ours</h6>
+          <h6 class="text-left" style="position: relative; left: 33%;">AutoSDF</h6>
+          <h6 class="text-left" style="position: relative; left: 33%;">ResNet2Vox</h6>
+          <h6 class="text-left" style="position: relative; left: 33%;">ResNet2SDF</h6>
+          <h6 class="text-left" style="position: relative; left: 33%;">Pix2Vox</h6>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>POE: controlling weights</h2>
+          </div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Texture-guided Colorization</h2>
+          </div>
+      </div>
+    </div>
+    
+    <hr class="divider" />
+
+
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-sm-8">
+                <h2>Example generated objects</h2>
+                <p>DreamFusion generates objects and scenes from diverse captions. <a href="./gallery.html">Search through hundreds of generated assets in our full gallery.</a></p>
+            </div>
+            <div class="col-sm-4 my-auto">
+                <a href="./gallery.html" class="btn btn-primary btn-lg btn-search"><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewbox="0 0 600 550">
+                    <path fill="none" stroke="#fff" stroke-width="36" stroke-linecap="round" d="m280,278a153,153 0 1,0-2,2l170,170m-91-117 110,110-26,26-110-110"/>
+                    </svg>Search assets
+                </a>
+            </div>
+        </div>
+        <div class="row captioned_videos" id="randomVideos">
+            <!-- <div class="col-4">
+                <div class="video-compare-container" style="width: 100%">
+                    <video class="video lazy" id="ex1" loop playsinline autoplay muted onplay="resizeAndPlay(this)" style="height: 0px;">
+                        <source data-src="https://dreamfusion-cdn.ajayj.com/gallery/a_teddy_bear_pushing_a_shopping_cart_full_of_fruits_and_vegetables_rgbdn_hq_15000.mp4" type="video/mp4"></source>
+                    </video>
+                    <canvas height="752" class="videoMerge" id="ex1Merge" width="1002"></canvas>
+                </div>
+                <h6 class="caption">A teddy bear pushing a shopping cart full of fruits and vegetables.</h6>
+            </div>
+            <div class="col-4">
+                <div class="video-compare-container" style="width: 100%">
+                    <video class="video lazy" id="ex2" loop playsinline autoplay muted onplay="resizeAndPlay(this)" style="height: 0px;">
+                        <source data-src="https://dreamfusion-cdn.ajayj.com/gallery/a_sliced_loaf_of_fresh_bread_rgbdn_hq_15000.mp4" type="video/mp4"></source>
+                    </video>
+                    <canvas height="752" class="videoMerge" id="ex2Merge" width="1002"></canvas>
+                </div>
+                <h6 class="caption">a sliced loaf of fresh bread.</h6>
+            </div>
+            <div class="col-4">
+                <div class="video-compare-container" style="width: 100%">
+                    <video class="video lazy" id="ex3" loop playsinline autoplay muted onplay="resizeAndPlay(this)" style="height: 0px;">
+                        <source data-src="https://dreamfusion-cdn.ajayj.com/gallery/a_zoomed_out_DSLR_photo_of_Sydney_opera_house,_aerial_view_rgbdn_hq_15000.mp4" type="video/mp4"></source>
+                    </video>
+                    <canvas height="752" class="videoMerge" id="ex3Merge" width="1002"></canvas>
+                </div>
+                <h6 class="caption">a zoomed out DSLR photo of Sydney opera house, aerial view.</h6>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Composing objects into a scene</h2>
+                <video class="video lazy" autoplay loop playsinline controls muted poster="https://dreamfusion-cdn.ajayj.com/carouselx24_128tall.jpg">
+                    <source src="https://dreamfusion-cdn.ajayj.com/carouselx24_128tall.mp4" type="video/mp4"></source>
+                </video>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <hr class="divider" />
+    <div class="container meshes" id="meshContainer" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Mesh exports</h2>
+                <p>Our generated NeRF models can be exported to meshes using the marching cubes algorithm for easy integration into 3D renderers or modeling software.</p>
+            </div>
+        </div>
+    </div> -->
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>How does SDFusion work?</h2>
+                <p>TODO </p>
+                <!-- <p>Given a caption, DreamFusion uses a text-to-image generative model called Imagen to optimize a 3D scene. We propose <strong>Score Distillation Sampling (SDS)</strong>, a way to generate samples from a diffusion model by optimizing a loss function. SDS allows us to optimize samples in an arbitrary parameter space, such as a 3D space, as long as we can map back to images differentiably. We use a 3D scene parameterization similar to Neural Radiance Fields, or NeRFs, to define this differentiable mapping. SDS alone produces reasonable scene appearance, but DreamFusion adds additional regularizers and optimization strategies to improve geometry. The resulting trained NeRFs are coherent, with high-quality normals, surface geometry and depth, and are relightable with a Lambertian shading model.</p> -->
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <video class="video lazy" controls muted poster="https://dreamfusion-cdn.ajayj.com/dreamfusion_overview.jpg">
+                    <source data-src="https://dreamfusion-cdn.ajayj.com/dreamfusion_overview.mp4" type="video/mp4"></source>
+                </video>
+            </div>
+        </div> -->
+    </div>
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Citation</h2>
+                <code>
+                    @article{cheng2022sdfusion,<br>
+                    &nbsp; author = {Cheng, Yen-Chi and Lee, Hsin-Ying and Tuyakov, Sergey and Schwing, Alex and Gui, Liangyan},<br>
+                    &nbsp; title  = {SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation},<br>
+                    &nbsp; journal = {arXiv},<br>
+                    &nbsp; year   = {2022},<br>
+                }</code>
+            </div>
+        </div>
+    </div>
+    <script src="https://polyfill.io/v3/polyfill.js?features=IntersectionObserver"></script>
+    <script src="/assets/js/yall.js"></script>
+    <script>
+        yall(
+            {
+                observeChanges: true
+            }
+        );
+    </script>
+    <script src="/assets/js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/js/webflow.fd002feec.js"></script>
+    <!-- Import the component -->
+</body>
+
+</html>
