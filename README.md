@@ -13,7 +13,8 @@ https://user-images.githubusercontent.com/27779063/206553305-e01009f7-3131-4a6b-
 
 # Code
 
-Code for "SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation" (coming soon!).
+Coming soon!
+<!-- Code for "SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation" (coming soon!). -->
 
 # <a name="citation"></a>Citing SDFusion
 
