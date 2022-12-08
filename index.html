@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XB3PR2Y1TQ"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XB3PR2Y1TQ');
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./assets/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png"> -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/table-crop.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/table-crop.png">
+    <link rel="manifest" href="./site.webmanifest">
+
+    <meta property="og:site_name" content="SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content="SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation" />
+    <meta property="og:description" content="SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation, 2022." />
+    <meta property="og:url" content="https://SDFusion.github.io/" />
+    <meta property="og:image" content="https://SDFusion.github.io/assets/images/dreamfusion_samples.png" />
+
+    <meta property="article:publisher" content="https://SDFusion.github.io/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation" />
+    <meta name="twitter:description" content="We use diffusion models to generate SDF for 3D shape synthesis." />
+    <meta name="twitter:url" content="https://SDFusion.github.io/" />
+    <meta name="twitter:image" content="https://dreamfusion3d.github.io/assets/images/dreamfusion_samples.png" />
+    <!-- <meta name="twitter:site" content="" /> -->
+
+    <script src="./assets/js/video_comparison.js"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer@2.0.1/dist/model-viewer.min.js"></script>
+</head>
+
+<body>
+    <!-- <div class="banner">
+      <video class="video lazy"
+          poster="https://dreamfusion-cdn.ajayj.com/sept28/banner_1x6_customhue_A.jpg"
+          autoplay loop playsinline muted>
+        <source data-src="https://dreamfusion-cdn.ajayj.com/sept28/banner_1x6_customhue_A.mp4" type="video/mp4"></source>
+      </video>
+    </div> -->
+
+    <div class="highlight-clean" style="padding-bottom: 10px;">
+        <!-- <div class="container" style="max-width: 768px;"> -->
+        <div class="container" style="max-width: 768px;">
+            <h1 class="text-center"><b>SDFusion</b>: Multimodal 3D Shape Completion, Reconstruction, and Generation</h1>
+        </div>
+
+        <div class="container" style="max-width: 768px; position: relative; left: 90px;">
+            <div class="row authors">
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a class="text-center" href="https://yccyenchicheng.github.io/">Yen-Chi Cheng</a></h5>
+                    <h6 class="text-center">UIUC</h6>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a href="http://hsinyinglee.com/">Hsin-Ying Lee</a></h5>
+                    <h6 class="text-center">Snap Research</h6>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a class="text-center" href="http://www.stulyakov.com/">Sergey Tulyakov</a></h5>
+                    <h6 class="text-center">Snap Research</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="max-width: 768px; position: relative; left: 180px;">
+          <div class="row authors">
+              <div class="col-sm-3">
+                <h5 class="text-center"><a class="text-center" href="https://www.alexander-schwing.de/">Alex Schwing</a></h5>
+                <h6 class="text-center">UIUC</h6>
+              </div>
+              <div class="col-sm-3">
+                <h5 class="text-center"><a class="text-center" href="https://cs.illinois.edu/about/people/faculty/lgui">Liangyan Gui</a></h5>
+                <h6 class="text-center">UIUC</h6>
+              </div>
+          </div>
+        </div>
+
+        <div class="buttons" style="margin-bottom: 8px;">
+            <a class="btn btn-light" role="button" href="https://arxiv.org/abs/2203.09516">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M16 0H8C6.9 0 6 .9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0M20 18H8V2H15V7H20V18M4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4M10 10V12H18V10H10M10 14V16H15V14H10Z"></path>
+                </svg>
+                Paper
+            </a>
+            <a class="btn btn-light" role="button" href="https://github.com/yccyenchicheng/SDFusion">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                Code
+            </a>
+            <a class="btn btn-light" role="button" href="index.html">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" width="24px" height="24px" viewBox="0 0 375 531">
+                    <polygon stroke="#000000" points="0.5,0.866 459.5,265.87 0.5,530.874 "/>
+                </svg>
+                Gallery
+            </a>
+        </div>
+    </div>
+    <!-- <hr class="divider" /> -->
+
+    <div class="container" style="max-width: 768px;">
+        <div class="row captioned_videos">
+            <div class="col-md-12">
+              <!-- <h2>SDFusion - Overview</h2> -->
+                <!-- Large format devices -->
+                <!-- <video class="video lazy d-none d-xs-none d-sm-block" autoplay loop playsinline muted poster="https://dreamfusion-cdn.ajayj.com/sept28/wipe_opposite_6x4_smoothstep.jpg">
+                    <source data-src="https://dreamfusion-cdn.ajayj.com/sept28/wipe_opposite_6x4_smoothstep.mp4" type="video/mp4"></source>
+                </video> -->
+                <!-- Small format devices -->
+                <!-- <video class="video lazy d-xs-block d-sm-none" autoplay loop playsinline muted poster="https://dreamfusion-cdn.ajayj.com/sept28/shaded_3x3_smoothstep.jpg">
+                    <source data-src="https://dreamfusion-cdn.ajayj.com/sept28/shaded_3x3_smoothstep.mp4" type="video/mp4"></source>
+                </video> -->
+
+                <!-- <video class="video lazy"
+                  poster="./assets/1-teaser-v3-out-1.png"
+                  autoplay loop playsinline muted>
+                  <source data-src="./assets/teaser-vid.mp4" type="video/mp4"></source>
+                </video> -->
+
+                <video autoplay loop muted playsinline width="80%" style="display: block; margin: auto">
+                <!-- <video autoplay loop muted playsinline width="0%"> -->
+                  <!-- <source src="./assets/teaser-vid-v1.mp4" type="video/mp4"> -->
+                  <source src="./assets/teaser-vid-v2.mp4" type="video/mp4">
+                </video>
+
+                <!-- <img src="./assets/1-teaser-v3-out-1.png" style="max-width: 768px;"> -->
+                <!-- <video autoplay loop muted playsinline width="20%"> -->
+                  <!-- <source src="./assets/" type="video/mp4"> -->
+                <!-- </video> -->
+                <!-- <p> <b>SDFusion</b> is a diffusion-based 3D shape generator. It enables various applications.
+                  (left) SDFusion can generate 3D shapes conditioned on different input modalities, including partial shapes, images, and text. 
+                  SDFusion can even jointly handle multiple conditioning modalities while controlling the  strength for each of them.
+                  (right) We showcase an application where we leverage pretrained 2D models to texture 3D shapes generated by SDFusion.</p> -->
+                <h6 class="caption" style="text-align: center;"> SDFusion is a diffusion-based 3D shape generator. It enables various applications.
+                  (top-left) SDFusion can generate 3D shapes conditioned on different input modalities, including partial shapes, images, and text. 
+                  (bottom-left) SDFusion can even jointly handle multiple conditioning modalities while controlling the strength for each of them.
+                  (top-right) We showcase an application where we leverage pretrained 2D models to texture 3D shapes generated by SDFusion. (bottom-right) 
+                  We use a 3D-printer to print out the generated shapes of SDFusion.
+                </h6>
+            </div>
+        </div>
+    </div>
+
+    <!-- <br> -->
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Abstract</h2>
+              <p>
+                  <!-- <strong> -->
+                    In this work, we present a novel framework built to simplify 3D asset generation for amateur users. To enable interactive generation, our method supports a variety of input modalities that can be easily provided by a human, including images, text, partially observed shapes and combinations of these, further allowing to adjust the strength of each input. At the core of our approach is an encoder-decoder, compressing 3D shapes into a compact latent representation, upon which a diffusion model is learned. To enable a variety of multi-modal inputs, we employ task-specific encoders with dropout followed by a cross-attention mechanism. Due to its flexibility, our model naturally supports a variety of tasks, outperforming prior works on shape completion, image-based 3D reconstruction, and text-to-3D. Most interestingly, our model can combine all these tasks into one swiss-army-knife tool, enabling the user to perform shape generation using incomplete shapes, images, and textual descriptions at the same time, providing the relative weights for each input and facilitating interactivity. Despite our approach being shape-only, we further show an efficient method to texture the generated shape using large-scale text-to-image models.
+                  <!-- </strong> -->
+              </p>
+          </div>
+      </div>
+  </div>
+
+    <!-- <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+        <div class="col-md-12">
+            <h2>3D print</h2>
+        </div>
+      </div>
+
+      <video autoplay loop muted playsinline width="20%">
+        <source src="./assets/3d_print.mp4" type="video/mp4">
+      </video>
+    </div> -->
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Shape Completion</h2>
+              <!-- TODO: change samples!!! -->
+          </div>
+      </div>
+
+      <video autoplay loop muted playsinline width="100%" style="display: block; margin: auto">
+        <source src="./assets/0-proj-shape-comp-out.mp4" type="video/mp4">
+      </video>
+
+
+      <div class="container" style="max-width: 768px; position: relative; left: 0px;">
+        <div class="row legends">
+        <!-- <div class="row authors"> -->
+          <h6 class="text-left" style="position: relative; left: 25px;">Input</h6>
+          <h6 class="text-left" style="position: relative; left: 60px;">Multimodal Shape Completion</h6>
+          <h6 class="text-left" style="position: relative; left: 100px;">Input</h6>
+          <h6 class="text-left" style="position: relative; left: 140px;">Multimodal Shape Completion</h6>
+        </div>
+      </div>
+
+      <p> Given a partial shape, SDFusion can perform multimodal shape completion. <font color="red">Red cuboid </font> indicates the missing region. </p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Text-guided 3D Generation</h2>
+          </div>
+      </div>
+
+      <video autoplay loop muted playsinline width="100%" style="display: block; margin: auto">
+        <source src="./assets/1-proj-txt2shape-out.mp4" type="video/mp4">
+      </video>
+
+      <p> Given a text description, SDFusion can generate diverse and high quality shapes. </p>
+
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Conditional Guidance for Shape Completion</h2>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+            <h3>
+              Text-guided shape completion.
+            </h3>
+        </div>
+      </div>
+
+      <!-- p_shape + text -->
+
+        <!-- <div class="col-txt_guide_shape_comp">
+          <div class="txt_guide_shape_comp-ours" style="position: relative; left: 0px;">
+            
+            <div class="img-container"> <img src="./assets/6-cond-guidance-txt/triangular table/734-txtW-1.0-imgW-0.0-04379243-32760b2e81bd4deac67fbc2559fd3fde-img_view-08-txt-triangular table-1-gt-part.gif"> </div>
+            
+            <div class="txt_input"> <h6> + </h6> </div>
+            <div class="txt_input">
+              <h5> "a triangular table" </h5>
+            </div>
+            <div class="txt_input"> <h6> &#10230 </h6> </div>
+            
+            <div class="img-container"> <img src="./assets/6-cond-guidance-txt/triangular table/734-txtW-1.0-imgW-0.0-04379243-32760b2e81bd4deac67fbc2559fd3fde-img_view-08-txt-triangular table-2-gen-1-trial_5.gif"> </div>
+            <div class="img-container"> <img src="./assets/6-cond-guidance-txt/triangular table/734-txtW-1.0-imgW-0.0-04379243-32760b2e81bd4deac67fbc2559fd3fde-img_view-08-txt-triangular table-2-gen-2-trial_5.gif"> </div>
+            <div class="img-container"> <img src="./assets/6-cond-guidance-txt/triangular table/734-txtW-1.0-imgW-0.0-04379243-32760b2e81bd4deac67fbc2559fd3fde-img_view-08-txt-triangular table-2-gen-3-trial_5.gif"> </div>
+          </div>
+        </div> -->
+
+      <video autoplay loop muted playsinline width="100%" style="display: block; margin: auto">
+        <source src="./assets/2-proj-txt-guide-shape-comp-out.mp4" type="video/mp4">
+      </video>
+
+      <p> Given a partial shape, SDFusion use the text inputs to guide the shape completion process. </p>
+
+      <!-- p_shape + image -->
+      <div class="row">
+        <div class="col-md-12">
+            <h3>
+              Image-guided shape completion.
+            </h3>
+        </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-img_guide_shape_comp">
+          <div class="img_guide_shape_comp" style="position: relative; left: 0px;">
+            <div class="gif-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_SIGURD-C-top-I-chair-IKEA_PATRIK-img_view-2756-L-with square back/-1-txtW-0.0-imgW-1.0-chair-IKEA_PATRIK-img_view-2756-txt-with square back-1-gt-part.gif"> </div>
+            <div class="txt_input"> <h5> + </h5> </div>
+            <div class="img-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_SIGURD-C-top-I-chair-IKEA_PATRIK-img_view-2756-L-with square back/-1-txtW-0.0-imgW-1.0-chair-IKEA_PATRIK-img_view-2756-txt-with square back-0-img.png"> </div>
+            <div class="txt_input"> <h5> &#10230 </h5> </div>
+            <div class="gif-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_SIGURD-C-top-I-chair-IKEA_PATRIK-img_view-2756-L-with square back/-1-txtW-0.0-imgW-1.0-chair-IKEA_PATRIK-img_view-2756-txt-with square back-2-gen-0-trial_0.gif"> </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img_guide_shape_comp">
+          <div class="img_guide_shape_comp" style="position: relative; left: 0px;">
+            <div class="gif-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-SS_004-img_view-0141/-1-txtW-0.0-imgW-1.0-chair-SS_004-img_view-0141-txt-with square back-1-gt-part.gif"> </div>
+            <div class="txt_input"> <h5> + </h5> </div>
+            <div class="img-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-SS_004-img_view-0141/-1-txtW-0.0-imgW-1.0-chair-SS_004-img_view-0141-txt-with square back-0-img.png"> </div>
+            <div class="txt_input"> <h5> &#10230 </h5> </div>
+            <div class="gif-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-SS_004-img_view-0141/-1-txtW-0.0-imgW-1.0-chair-SS_004-img_view-0141-txt-with square back-2-gen-2-trial_0.gif"> </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img_guide_shape_comp">
+          <div class="img_guide_shape_comp" style="position: relative; left: 0px;">
+            <div class="gif-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-IKEA_KLAPPSTA_1-img_view-2456/-1-txtW-0.0-imgW-1.0-chair-IKEA_KLAPPSTA_1-img_view-2456-txt-with square back-1-gt-part.gif"> </div>
+            <div class="txt_input"> <h5> + </h5> </div>
+            <div class="img-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-IKEA_KLAPPSTA_1-img_view-2456/-1-txtW-0.0-imgW-1.0-chair-IKEA_KLAPPSTA_1-img_view-2456-txt-with square back-0-img.png"> </div>
+            <div class="txt_input"> <h5> &#10230 </h5> </div>
+            <div class="gif-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-IKEA_KLAPPSTA_1-img_view-2456/-1-txtW-0.0-imgW-1.0-chair-IKEA_KLAPPSTA_1-img_view-2456-txt-with square back-2-gen-0-trial_0.gif"> </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img_guide_shape_comp">
+          <div class="img_guide_shape_comp" style="position: relative; left: 0px;">
+            <div class="gif-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-SS_001-img_view-0130-L-chair without arms/-1-txtW-0.0-imgW-1.0-chair-SS_001-img_view-0130-txt-chair without arms-1-gt-part.gif"> </div>
+            <div class="txt_input"> <h5> + </h5> </div>
+            <div class="img-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-SS_001-img_view-0130-L-chair without arms/-1-txtW-0.0-imgW-1.0-chair-SS_001-img_view-0130-txt-chair without arms-0-img.png"> </div>
+            <div class="txt_input"> <h5> &#10230 </h5> </div>
+            <div class="gif-container"> <img src="./assets/6-cond-guidance-img/S-chair-IKEA_FUSION-C-bottom-I-chair-SS_001-img_view-0130-L-chair without arms/-1-txtW-0.0-imgW-1.0-chair-SS_001-img_view-0130-txt-chair without arms-2-gen-0-trial_0.gif"> </div>
+          </div>
+        </div>
+      </div> -->
+
+      <video autoplay loop muted playsinline width="60%" style="display: block; margin: auto">
+        <source src="./assets/3-proj-img-guide-shape-comp-out.mp4" type="video/mp4">
+      </video>
+
+    <p> Given a partial shape, SDFusion use an image as guidance as well for shape completion. </p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Single-view Reconstruction</h2>
+          </div>
+      </div>
+
+      <video autoplay loop muted playsinline width="100%" style="display: block; margin: auto">
+        <source src="./assets/4-proj-img2shape-out.mp4" type="video/mp4">
+      </video>
+
+      <!-- <div class="row">
+        <div class="col-img2shape-comp">
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-gen-vox-rand_tf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-gen-vox-resnet2sdf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/3-chair+SS_059+voxel-0480-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+  
+      <div class="row">
+          <div class="col-img2shape-comp">
+            <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-1-img-gt.png"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-1-gt-vox.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-df-vox-0.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-gen-vox-rand_tf-2.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-gen-vox-resnet2vox.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-gen-vox-resnet2sdf-0.gif"> </div>
+            <div class="img-container"> <img src="./assets/4-img2shape-comp/17-chair+SS_103+voxel-0845-2-gen-vox-pix2vox.gif"> </div>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp" >
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-gen-vox-rand_tf-1.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-gen-vox-resnet2sdf.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/22-chair+SS_033+voxel-0355-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp" >
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-gen-vox-rand_tf-1.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-gen-vox-resnet2sdf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/31-bed+IKEA_HEMNES_2+voxel-0356-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp" >
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-gen-vox-rand_tf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-gen-vox-resnet2sdf-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/65-desk+IKEA_MICKE_2+voxel-0536-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-img2shape-comp" >
+          <div class="img-container-gtimg"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-1-img-gt.png"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-1-gt-vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-df-vox-0.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-gen-vox-rand_tf-2.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-gen-vox-resnet2vox.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-gen-vox-resnet2sdf.gif"> </div>
+          <div class="img-container"> <img src="./assets/4-img2shape-comp/77-sofa+IKEA_SOLSTA_d053e745b565fa391c1b3b2ed8d13bf8+voxel-1702-2-gen-vox-pix2vox.gif"> </div>
+        </div>
+      </div> -->
+
+      <div class="container" style="max-width: 768px; position: relative; left: 0px;">
+        <div class="row legends">
+        <!-- <div class="row authors"> -->
+          <!-- <h6 class="text-left" style="position: relative; left: 2%;">Input</h6>
+          <h6 class="text-left" style="position: relative; left: 11%;">GT</h6>
+          <h6 class="text-left" style="position: relative; left: 21%;">Ours</h6>
+          <h6 class="text-left" style="position: relative; left: 27%;">AutoSDF</h6>
+          <h6 class="text-left" style="position: relative; left: 30%;">ResNet2Vox</h6>
+          <h6 class="text-left" style="position: relative; left: 31%;">ResNet2SDF</h6>
+          <h6 class="text-left" style="position: relative; left: 33%;">Pix2Vox</h6> -->
+          <h6 class="text-left" style="position: relative; left: 4.5%;">Input</h6>
+          <h6 class="text-left" style="position: relative; left: 14%;">GT</h6>
+          <h6 class="text-left" style="position: relative; left: 24%;">Ours</h6>
+          <h6 class="text-left" style="position: relative; left: 32%;">AutoSDF</h6>
+          <h6 class="text-left" style="position: relative; left: 35%;">ResNet2Vox</h6>
+          <h6 class="text-left" style="position: relative; left: 36.5%;">ResNet2SDF</h6>
+          <h6 class="text-left" style="position: relative; left: 40%;">Pix2Vox</h6>
+        </div>
+      </div>
+
+    <p> The results of single-view reconstruction and the comparisons with the baselines. </p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Multi-condition: controlling the conditional strength between image and text</h2>
+          </div>
+
+          <video autoplay loop muted playsinline width="60%" style="display: block; margin: auto">
+            <source src="./assets/poe-webpage-v1.mp4" type="video/mp4">
+          </video>
+
+          <p> Given a partial shape, SDFusion can condition on multiple conditional modalities, e.g., image and text. We can generate different results by adjusting the weights between image and text. </p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+              <h2>Text-guided Colorization</h2>
+          </div>
+      </div>
+
+      <video autoplay loop muted playsinline width="80%" style="display: block; margin: auto">
+        <source src="./assets/6-proj-txt-colorization.mp4" type="video/mp4">
+      </video>
+
+      <p> Given a shape generated by SDFusion and a text description, we adopt an off-the-shelf 2D diffusion model (inspired from <a href="https://dreamfusion3d.github.io/">DreamFusion</a>) to perform texturization. </p>
+    </div>
+    
+    <!-- <hr class="divider" /> -->
+
+    <!-- <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-sm-8">
+                <h2>Example generated objects</h2>
+                <p>SDFusion generates objects from partial shapes, images, and texts. <a href="./gallery.html">Search through hundreds of generated assets in our full gallery.</a></p>
+            </div>
+            <div class="col-sm-4 my-auto">
+                <a href="./gallery.html" class="btn btn-primary btn-lg btn-search"><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewbox="0 0 600 550">
+                    <path fill="none" stroke="#fff" stroke-width="36" stroke-linecap="round" d="m280,278a153,153 0 1,0-2,2l170,170m-91-117 110,110-26,26-110-110"/>
+                    </svg>Search assets
+                </a>
+            </div>
+        </div>
+    </div> -->
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Overview of SDFusion</h2>
+                <br>
+                <img src="./assets/2-fig2.1-v4-out-1.png" style="max-width: 768px;">
+                <br> <br>
+                <p>(left) To enable high-resolution generation, we first encode 3D shapes into a latent space, where a diffusion model is trained.
+                  Furthermore, to enable flexible conditional generation, we adopt class-specific encoders along with classifier-free guidance to 
+                  enable multi-modality conditioning. (right) At inference time, we can control the importance of each conditioning modality.</p>
+                <br>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <video class="video lazy" controls muted poster="https://dreamfusion-cdn.ajayj.com/dreamfusion_overview.jpg">
+                    <source data-src="https://dreamfusion-cdn.ajayj.com/dreamfusion_overview.mp4" type="video/mp4"></source>
+                </video>
+            </div>
+        </div> -->
+    </div>
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Citation</h2>
+                <code>
+                    @article{cheng2022sdfusion,<br>
+                    &nbsp; author = {Cheng, Yen-Chi and Lee, Hsin-Ying and Tuyakov, Sergey and Schwing, Alex and Gui, Liangyan},<br>
+                    &nbsp; title  = {SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation},<br>
+                    &nbsp; journal = {arXiv},<br>
+                    &nbsp; year   = {2022},<br>
+                }</code>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="container" style="max-width: 768px;">
+      <div class="row">
+          <div class="col-md-12">
+            <h2>Acknowledgement</h2>
+          </div>
+          <h6> This webpage is borrowed from <a href="https://dreamfusion3d.github.io/">DreamFusion</a>. Thanks for their beautiful website! </h6>
+      </div>
+    </div>
+
+    <script src="https://polyfill.io/v3/polyfill.js?features=IntersectionObserver"></script>
+    <script src="/assets/js/yall.js"></script>
+    <script>
+        yall(
+            {
+                observeChanges: true
+            }
+        );
+    </script>
+    <script src="/assets/js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/js/webflow.fd002feec.js"></script>
+    <!-- Import the component -->
+</body>
+
+</html>
