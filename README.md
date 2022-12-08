@@ -21,9 +21,7 @@ Code for "SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generati
 
 ```BibTeX
 @inproceedings{cheng2022,
-  title={{SDFusion}: Multimodal 3
-
-D Shape Completion, Reconstruction, and Generation},
+  title={{SDFusion}: Multimodal 3D Shape Completion, Reconstruction, and Generation},
   author={Cheng, Yen-Chi and Lee, Hsin-Ying and Tulyakov, Sergey and Schwing, Alex and Gui, Liangyan},
   journal={arXiv preprint arXiv:2212.00792},
   year={2022}
