@@ -1,5 +1,5 @@
 # SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation
-[[`arXiv`](https://arxiv.org/abs/2203.09516)]
+[[`arXiv`](https://arxiv.org/abs/2212.04493)]
 [[`Project Page`](https://yccyenchicheng.github.io/SDFusion/)]
 [[`BibTex`](#citation)]
 
@@ -24,7 +24,7 @@ Coming soon!
 @inproceedings{cheng2022sdfusion,
   title={{SDFusion}: Multimodal 3D Shape Completion, Reconstruction, and Generation},
   author={Cheng, Yen-Chi and Lee, Hsin-Ying and Tulyakov, Sergey and Schwing, Alex and Gui, Liangyan},
-  journal={arXiv preprint arXiv:2212.00792},
+  journal={arXiv preprint arXiv:2212.04493},
   year={2022}
 }
 ```
