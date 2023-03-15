@@ -1,0 +1,7 @@
+{
+    "raw_dirs_v1": {
+        "mesh_dir": "BuildingNet_dataset_v0_1/",
+        "norm_mesh_dir": "BuildingNet_dataset_v0_1/norm_mesh_dir/",
+        "sdf_dir": "BuildingNet_dataset_v0_1/SDF/"
+    }
+}

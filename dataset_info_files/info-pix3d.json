@@ -1,0 +1,30 @@
+{
+    "lst_dir": "./dataset_info_files/pix3d_filelists",
+    "cats": {
+        "bed": 0,
+        "bookcase": 1,
+        "chair": 2,
+        "desk": 3,
+        "misc": 4,
+        "sofa": 5,
+        "table": 6,
+        "tool": 7,
+        "wardrobe": 8
+    },
+    "all_cats": [
+        "bed",
+        "bookcase",
+        "chair",
+        "desk",
+        "misc",
+        "sofa",
+        "table",
+        "tool",
+        "wardrobe"
+    ],
+    "raw_dirs_v1": {
+        "mesh_dir": "pix3d/model_align",
+        "norm_mesh_dir": "pix3d/norm_mesh_dir/",
+        "sdf_dir": "pix3d/SDF_v1_64/"
+    }
+}

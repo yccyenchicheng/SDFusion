@@ -1,0 +1,26 @@
+model:
+  params:
+    linear_start: 0.00085
+    linear_end: 0.012
+    conditioning_key: crossattn
+    timesteps: 1000
+    scale_factor: 0.18215
+
+unet:
+  params:
+    image_size: 16
+    in_channels: 3
+    out_channels: 3
+    model_channels: 192
+    num_res_blocks: 2
+    attention_resolutions: [ 1,2,4 ] # 16, 8, 4
+    # note: this isn\t actually the resolution but
+    # the downsampling factor, i.e. this corresnponds to
+    # attention on spatial resolution 8,16,32, as the
+    # spatial reolution of the latents is 64 for f4
+    channel_mult: [ 1,2,4,4 ]
+    # num_head_channels: 32
+    num_heads: 6
+
+    # 3d
+    dims: 3

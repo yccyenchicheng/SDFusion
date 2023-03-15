@@ -1,0 +1,1 @@
+All paths under info-[dataset].json are relative paths. Should preprend the [dataroot].

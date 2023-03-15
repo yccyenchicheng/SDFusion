@@ -1,0 +1,1 @@
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./isosurface/:./isosurface/tbb/tbb2018_20180822oss/lib/intel64/gcc4.7:/opt/intel/lib/intel64:/opt/intel/mkl/lib/intel64:/usr/local/lib64:/usr/local/lib:/usr/local/cuda/lib64
