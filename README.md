@@ -31,6 +31,9 @@ First create a foler to save the pre-trained weights. Here we assume the folder 
 ```
 mkdir saved_ckpt
 
+# VQVAE's checkpoint
+wget https://uofi.box.com/shared/static/zdb9pm9wmxaupzclc7m8gzluj20ja0b6.pth -O saved_ckpt/vqvae-snet-all.pth
+
 # SDFusion
 wget https://uofi.box.com/shared/static/ueo01ctnlzobp2dmvd8iexy1bdsquuc1.pth -O saved_ckpt/sdfusion-snet-all.pth
 

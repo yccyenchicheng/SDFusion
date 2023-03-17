@@ -1,0 +1,29 @@
+# extensions
+*.pyc
+*.png
+*.jpg
+*.tar.gz
+*.tar.xz
+*.tar
+*.zip
+*.gif
+*.rar
+LICENSE
+
+# cache
+__pycache__/
+.ipynb*/
+
+# logs
+logs/
+quant_logs*/
+qual_logs*/
+saved_ckpt*/
+
+# data
+data
+demo_data/
+
+# bak
+bak*/
+
