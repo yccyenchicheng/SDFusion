@@ -240,15 +240,12 @@ class SDFusionImage2ShapeModel(BaseModel):
         self.img = input['img']
         self.uc_img = torch.zeros_like(self.img).to(self.device)
 
-        self.gt_vox = input['gt_vox']
-
         if max_sample is not None:
             self.x = self.x[:max_sample]
             self.img = self.img[:max_sample]
             self.uc_img = self.uc_img[:max_sample]
-            self.gt_vox = self.gt_vox[:max_sample]
 
-        vars_list = ['x', 'img', 'gt_vox']
+        vars_list = ['x', 'img']
 
         self.tocuda(var_names=vars_list)
 
