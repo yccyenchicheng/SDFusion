@@ -39,9 +39,8 @@ vq_cat="all"
 # cat='chair'
 cat='all'
 max_dataset_size=10000000
-# dataset_mode='snet_txt_img'
 dataset_mode='snet_mm2shape'
-dataroot="data_data01"
+dataroot="data_data01" # change this to match your dataroot
 trunc_thres=0.2
 #####################
 
@@ -56,7 +55,7 @@ today=$(date '+%m%d')
 me=`basename "$0"`
 me=$(echo $me | cut -d'.' -f 1)
 
-note="clean-code"
+note="release"
 
 name="${DATE_WITH_TIME}-${model}-${dataset_mode}-${pix3d_mode}-${cat}-LR${lr}-${note}"
 

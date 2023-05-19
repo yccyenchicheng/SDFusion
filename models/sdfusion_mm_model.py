@@ -1,12 +1,12 @@
+# Reference: diffusion is borrowed from the LDM repo: https://github.com/CompVis/latent-diffusion
+# Specifically, functions from: https://github.com/CompVis/latent-diffusion/blob/main/ldm/models/diffusion/ddpm.py
 import os
 from collections import OrderedDict
 from functools import partial
-from inspect import isfunction
 
 import cv2
 import numpy as np
 import einops
-import mcubes
 from omegaconf import OmegaConf
 from termcolor import colored, cprint
 from einops import rearrange, repeat
@@ -20,7 +20,7 @@ import torchvision.utils as vutils
 import torchvision.transforms as transforms
 
 from models.base_model import BaseModel
-from models.networks.vqvae_networks.auto_encoder import VQVAE
+from models.networks.vqvae_networks.network import VQVAE
 from models.networks.diffusion_networks.network import DiffusionUNet
 from models.networks.resnet_v1 import resnet18
 from models.networks.bert_networks.network import BERTTextEncoder
