@@ -79,7 +79,7 @@ wget [url for downloading ShapeNetV1]
 unzip ShapeNetCore.v1.zip
 ./launchers/unzip_snet_zipfiles.sh # unzip the zip files
 cd preprocess
-./launchers/launch_create_sdf_snet.sh
+./launchers/launch_create_sdf_shapenet.sh
 ```
 
 * BuildingNet
