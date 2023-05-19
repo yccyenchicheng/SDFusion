@@ -24,8 +24,6 @@ from models.networks.vqvae_networks.network import VQVAE
 from models.networks.diffusion_networks.network import DiffusionUNet
 from models.model_utils import load_vqvae
 
-from utils.qual_util import get_shape_comp_mask
-
 # ldm util
 from models.networks.diffusion_networks.ldm_diffusion_util import (
     make_beta_schedule,
@@ -103,6 +101,7 @@ class SDFusionModel(BaseModel):
             dist, elev, azim = 1.7, 20, 20
         elif opt.dataset_mode == 'buildingnet':
             dist, elev, azim = 1.0, 20, 20
+            
         self.renderer = init_mesh_renderer(image_size=256, dist=dist, elev=elev, azim=azim, device=self.device)
 
         # for distributed training
