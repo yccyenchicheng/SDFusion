@@ -59,7 +59,7 @@ note="release"
 
 name="${DATE_WITH_TIME}-${model}-${dataset_mode}-${pix3d_mode}-${cat}-LR${lr}-${note}"
 
-debug=1
+debug=0
 if [ $debug = 1 ]; then
     printf "${RED}Debugging!${NC}\n"
     batch_size=2

@@ -158,7 +158,7 @@ After training, copy the trained VQVAE checkpoint to the `./saved_ckpt` folder. 
 
 5. Train SDFusion for multi-modality shape generation
 ```
-coming soon!
+./launchers/train_sdfusion_mm2shape.sh
 ```
 
 6. Train the text-guided texturization
