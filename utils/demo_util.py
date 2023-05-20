@@ -14,6 +14,13 @@ from models.base_model import create_model
 
 from utils.util import seed_everything
 
+def tensor_to_pil(tensor):
+    # """ assume shape: c h w """
+    if tensor.dim() == 4:
+        tensor = vutils.make_grid(tensor)
+
+    return Image.fromarray( (rearrange(tensor, 'c h w -> h w c').cpu().numpy() * 255.).astype(np.uint8) )
+
 ############ START: all Opt classes ############
 
 class BaseOpt(object):
@@ -72,7 +79,7 @@ class SDFusionOpt(BaseOpt):
     def init_dset_args(self, dataroot='data', dataset_mode='snet', cat='all', res=64, cached_dir=None):
         # dataset - snet
         self.dataroot = dataroot
-        self.cached_dir = None
+        self.cached_dir = cached_dir
         self.ratio = 1.0
         self.res = res
         self.dataset_mode = dataset_mode
@@ -104,10 +111,10 @@ class SDFusionText2ShapeOpt(BaseOpt):
         # some other custom args here
         print(f'[*] {self.name()} initialized.')
         
-    def init_dset_args(self, dataset_mode='text2shape', cat='all', res=64):
+    def init_dset_args(self, dataroot='data', dataset_mode='text2shape', cat='all', res=64, cached_dir=None):
         # dataset - snet
-        self.dataroot = None
-        self.cached_dir = None
+        self.dataroot = dataroot
+        self.cached_dir = cached_dir
         self.ratio = 1.0
         self.res = res
         self.dataset_mode = dataset_mode
@@ -138,10 +145,10 @@ class SDFusionImage2ShapeOpt(BaseOpt):
         # some other custom args here
         print(f'[*] {self.name()} initialized.')
         
-    def init_dset_args(self, dataset_mode='pix3d_img2shape', cat='all', res=64):
+    def init_dset_args(self, dataroot='data', dataset_mode='pix3d_img2shape', cat='all', res=64, cached_dir=None):
         # dataset - snet
-        self.dataroot = None
-        self.cached_dir = None
+        self.dataroot = dataroot
+        self.cached_dir = cached_dir
         self.ratio = 1.0
         self.res = res
         self.dataset_mode = dataset_mode
@@ -164,6 +171,41 @@ class SDFusionImage2ShapeOpt(BaseOpt):
 
     def name(self):
         return 'SDFusionImage2ShapeOption'
+
+
+class SDFusionMM2ShapeOpt(BaseOpt):
+    def __init__(self, gpu_ids=0, seed=None):
+        super().__init__(gpu_ids, seed=seed)
+
+        # some other custom args here
+        print(f'[*] {self.name()} initialized.')
+        
+    def init_dset_args(self, dataroot='data', dataset_mode='mm2shape', cat='all', res=64, cached_dir=None):
+        # dataset - snet
+        self.dataroot = dataroot
+        self.cached_dir = cached_dir
+        self.ratio = 1.0
+        self.res = res
+        self.dataset_mode = dataset_mode
+        self.cat = cat
+        
+    def init_model_args(
+            self,
+            ckpt_path='saved_ckpt/sdfusion-mm2shape.pth',
+            vq_ckpt_path='saved_ckpt/vqvae-snet-all.pth',
+        ):
+        self.model = 'sdfusion-mm2shape'
+        self.df_cfg = 'configs/sdfusion-mm2shape.yaml'
+        self.ckpt = ckpt_path
+        
+        self.vq_model = 'vqvae'
+        self.vq_cfg = 'configs/vqvae_snet.yaml'
+        self.vq_ckpt = vq_ckpt_path
+        self.vq_dset = 'snet'
+        self.vq_cat = 'all'
+
+    def name(self):
+        return 'SDFusionMM2ShapeOption'
 
 
 ############ END: all Opt classes ############
@@ -337,3 +379,34 @@ def preprocess_image(image, mask):
     
     return img_comp, img_clean
 
+def get_shape_mask(mask_mode, device='cuda'):
+
+    B = 1
+    D = 64
+    d = 16
+    
+    x_mask = torch.ones(B, 1, D, D, D).bool().to(device)
+    z_mask = torch.ones(B, 1, d, d, d).to(device)
+    
+    if mask_mode == 'bottom':
+        # given bottom-half
+        x_mask[:, :, :, D//2:, :] = False
+        z_mask[:, :, :, d//2:, :] = 0
+    
+    elif mask_mode == 'top':
+        # given top-half
+        x_mask[:, :, :, :D//2, :] = False
+        z_mask[:, :, :, :d//2, :] = 0
+
+    elif mask_mode == 'back':
+        # given back-half
+        x_mask[:, :, :, :, D//2:] = False
+        z_mask[:, :, :, :, d//2:] = 0
+
+    elif mask_mode == 'front':
+        # given front-half
+        x_mask[:, :, :, :, :D//2] = False
+        z_mask[:, :, :, :, :d//2] = 0
+
+    return x_mask, z_mask
+    

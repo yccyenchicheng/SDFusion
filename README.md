@@ -44,7 +44,7 @@ wget https://uofi.box.com/shared/static/01hnf7pbewft4115qkvv9zhh22v4d8ma.pth -O 
 wget https://uofi.box.com/shared/static/vyqs6aex3rwbgxweyl3qh21c8p6vu33f.pth -O saved_ckpt/sdfusion-txt2shape.pth
 
 # SDFusion: multi-modal conditional shape generation (partial shape + [ img {and/or} txt] -> shape)
-# coming soon!
+wget https://uofi.box.com/shared/static/d95l3465arc0ffley5vwmz8bscaubmhc.pth -O saved_ckpt/sdfusion-mm2shape.pth
 
 ```
 

@@ -483,8 +483,9 @@ class SDFusionMultiModal2ShapeModel(BaseModel):
         B = self.x.shape[0]
         z = self.vqvae(self.x, forward_no_quant=True, encode_only=True)
 
-        # TODO: get mask given mask_mode
-        x_mask, z_mask = get_mask(mask_mode)
+        # get mask
+        from utils.demo_util import get_shape_mask
+        x_mask, z_mask = get_shape_mask(mask_mode)
 
         # for vis purpose
         self.x_part = self.x.clone()
