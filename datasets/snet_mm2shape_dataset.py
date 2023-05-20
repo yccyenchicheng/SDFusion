@@ -41,7 +41,7 @@ class ShapeNetMultiModal2ShapeDataset(BaseDataset):
 
             self.data = [row for row in reader]
 
-        with open(f'{dataroot}/ShapeNet/info.json') as f:
+        with open(f'dataset_info_files/info-shapenet.json') as f:
             self.info = json.load(f)
 
         self.cat_to_id = self.info['cats']

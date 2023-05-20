@@ -22,7 +22,7 @@ def create_model(opt):
         from models.sdfusion_img2shape_model import SDFusionImage2ShapeModel
         model = SDFusionImage2ShapeModel()
 
-    elif opt.model == 'sdfusion-mm':
+    elif opt.model == 'sdfusion-mm2shape':
         from models.sdfusion_mm_model import SDFusionMultiModal2ShapeModel
         model = SDFusionMultiModal2ShapeModel()
         

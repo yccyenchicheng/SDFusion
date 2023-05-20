@@ -42,7 +42,7 @@ from utils.distributed import reduce_loss_dict
 # rendering
 from utils.util_3d import init_mesh_renderer, render_sdf
 
-class SDFusionMM2ShapeModel(BaseModel):
+class SDFusionMultiModal2ShapeModel(BaseModel):
     def name(self):
         return 'SDFusion-Multi-Modal-Conditional-Shape-Generation-Model'
 
@@ -350,7 +350,6 @@ class SDFusionMM2ShapeModel(BaseModel):
         model_output = self.apply_model(x_noisy, t, cond)
 
         loss_dict = {}
-        # prefix = 'train' if self.training else 'val'
 
         if self.parameterization == "x0":
             target = x_start
@@ -360,9 +359,7 @@ class SDFusionMM2ShapeModel(BaseModel):
             raise NotImplementedError()
 
         # l2
-        # loss_simple = self.get_loss(model_output, target, mean=False).mean([1, 2, 3])
         loss_simple = self.get_loss(model_output, target, mean=False).mean([1, 2, 3, 4])
-        # loss_dict.update({f'{prefix}/loss_simple': loss_simple.mean()})
         loss_dict.update({f'loss_simple': loss_simple.mean()})
 
         logvar_t = self.logvar[t].to(self.device)
@@ -402,7 +399,6 @@ class SDFusionMM2ShapeModel(BaseModel):
         #    encoder, quant_conv, but do not quantize
         #    check: ldm.models.autoencoder.py, VQModelInterface's encode(self, x)
         with torch.no_grad():
-            # z = self.vqvae_module.encode_no_quant(self.x)
             z = self.vqvae(self.x, forward_no_quant=True, encode_only=True).detach()
 
         # 2. do diffusion's forward
@@ -416,7 +412,7 @@ class SDFusionMM2ShapeModel(BaseModel):
     @torch.no_grad()
     # def inference(self, data, sample=True, ddim_steps=None, ddim_eta=0., quantize_denoised=True, infer_all=False):
     def naive_inference(self, data, ddim_steps=None, ddim_eta=0., uc_scale=None,
-                  infer_all=False, max_sample=16)
+                  infer_all=False, max_sample=16):
 
         self.switch_eval()
 

@@ -1,4 +1,4 @@
- strip from: https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py
+# strip from: https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py
 import torch
 from torch import Tensor
 import torch.nn as nn

@@ -43,7 +43,7 @@ class BaseOptions():
         ############## START: model related options ################
         self.parser.add_argument(
                             '--model', type=str, default='sdfusion',
-                            choices=['vqvae', 'sdfusion', 'sdfusion-img2shape', 'sdfusion-txt2shape','sdfusion-mm'],
+                            choices=['vqvae', 'sdfusion', 'sdfusion-img2shape', 'sdfusion-txt2shape','sdfusion-mm2shape'],
                             help='chooses which model to use.'
                         )
         self.parser.add_argument('--ckpt', type=str, default=None, help='ckpt to load.')
