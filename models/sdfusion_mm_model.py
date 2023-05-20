@@ -411,7 +411,7 @@ class SDFusionMultiModal2ShapeModel(BaseModel):
     # check: ddpm.py, log_images(). line 1317~1327
     @torch.no_grad()
     # def inference(self, data, sample=True, ddim_steps=None, ddim_eta=0., quantize_denoised=True, infer_all=False):
-    def naive_inference(self, data, ddim_steps=None, ddim_eta=0., uc_scale=None,
+    def inference(self, data, ddim_steps=None, ddim_eta=0., uc_scale=None,
                   infer_all=False, max_sample=16):
 
         self.switch_eval()
@@ -444,10 +444,6 @@ class SDFusionMultiModal2ShapeModel(BaseModel):
         shape = self.z_shape
 
         # get noise, denoise, and decode with vqvae
-        uc = self.cond_model(self.uc_img).float() # img shape
-        c_img = self.cond_model(self.img).float()
-        B = c_img.shape[0]
-        shape = self.z_shape
         samples, intermediates = self.ddim_sampler.sample(S=ddim_steps,
                                                         batch_size=B,
                                                         shape=shape,
@@ -465,7 +461,7 @@ class SDFusionMultiModal2ShapeModel(BaseModel):
     #         txt_scale=1.0, img_scale=1.0, mask_mode='1', mask_x=False,
     #         mm_cls_free=False,
     #     ):
-    def inference(self, data, mask_mode=None, ddim_steps=None, ddim_eta=0., uc_scale=None, 
+    def mm_inference(self, data, mask_mode=None, ddim_steps=None, ddim_eta=0., uc_scale=None, 
                   txt_scale=1.0, img_scale=1.0, mm_cls_free=False, infer_all=False, max_sample=16):
     
         self.switch_eval()
@@ -639,7 +635,7 @@ class SDFusionMultiModal2ShapeModel(BaseModel):
         b, c, h, w = self.img_gt.shape
         img_shape = (3, h, w)
         # write text as img
-        self.img_text = self.get_img_text(self.txt, bs=b, img_shape=img_shape)
+        self.img_text = self.write_text_on_img(self.txt, bs=b, img_shape=img_shape)
         self.img_text = rearrange(torch.from_numpy(self.img_text), 'b h w c -> b c h w')
 
         vis_tensor_names = [

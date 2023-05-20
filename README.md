@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/27779063/206553305-e01009f7-3131-4a6b-
 # Installation
 We recommend using [`conda`](https://www.anaconda.com/products/distribution) to install the required python packages. You might need to change the `cudatoolkit` version to match with your GPU driver.
 ```
-conda create -n sdf python=3.8 -y && conda activate sdf 
+conda create -n sdfusion python=3.8 -y && conda activate sdfusion
 conda install pytorch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0 cudatoolkit=11.3 -c pytorch -c conda-forge -y
 conda install -c fvcore -c iopath -c conda-forge fvcore iopath -y
 conda install pytorch3d -c pytorch3d

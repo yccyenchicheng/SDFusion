@@ -62,7 +62,6 @@ class ShapeNetMultiModal2ShapeDataset(BaseDataset):
             render_img_list = [os.path.join(render_img_dir, f) for f in os.listdir(render_img_dir) if '.png' in f]
 
             if not os.path.exists(sdf_path):
-                # import pdb; pdb.set_trace()
                 continue
 
             self.model_list.append(sdf_path)
