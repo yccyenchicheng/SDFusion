@@ -710,6 +710,7 @@ def create_sdf_shapenet(sdfcommand, marching_cube_command, LIB_command,
     # import subprocess
     # subprocess.run(LIB_command)
     os.system(LIB_command)
+    # import pdb; pdb.set_trace()
 
     resolution = int(res // reduce)
     sdf_root = raw_dirs["sdf_dir"]
@@ -873,7 +874,7 @@ if __name__ == "__main__":
         else:
             FLAGS.cats = [cat]
     
-    isosurface_dir = './isosurface/'
+    isosurface_dir = './isosurface'
     sdf_cmd = f'{isosurface_dir}/computeDistanceField'
     mcube_cmd = f'{isosurface_dir}/computeMarchingCubes'
     lib_cmd = f'{isosurface_dir}/LIB_PATH'
